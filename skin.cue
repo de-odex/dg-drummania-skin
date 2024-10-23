@@ -1,0 +1,799 @@
+package dgskin
+
+import ("list")
+
+name:        "drummania imitator"
+gameVersion: "0.8.0"
+skinVersion: "0.1.0"
+
+// notes
+
+// alternating
+// 13 / 720 heights per 1 / 60 second for 4.0 speed
+// 14 / 720 heights per 1 / 60 second for 4.0 speed
+// 13.5 / 720 * 60 = 1.125 screens per second = 810 pixels per second
+
+// 150 / 720 for judgement line height from centre to bottom
+// 6 / 720 for judgement line thickness
+// ~9 / 720 chip thickness at 4.0 speed
+// ~6 / 720 chip thickness at 1.0 speed
+// ~24 or 23 / 720 chip thickness at 20.0 speed
+// formula is about 6 * (1 + (speed-1)/6) = 6 + (speed - 1) = 5 + speed
+
+// region internal state
+
+// inputs to be used as in gitadora's settings page
+_#inputs: {
+	speed:      number | *2.0
+	laneLayout: *"A" | "B" | "C" | "D"
+	shutter: {
+		top:    #Percentage | *0
+		bottom: #Percentage | *0
+	}
+	targetLinePosition:   #Percentage | *0
+	targetEffectPosition: *"A" | "B"
+}
+
+// these are constants no matter what
+_#constants: {
+	// as in the default position with setting 0
+	judgementLine: {
+		position:  150 / 720 // old 156, 0.216
+		thickness: 6 / 720
+		offset:    1 / 720
+	}
+	judgementText: {
+		position: {
+			A: 328 / 720 // 0.455
+			B: 90 / 720
+		}
+
+		offset: 32 / 720
+	}
+	// chip: {
+	// 	thickness: 12 / 720 // 0.016
+	// }
+	beatLine: {
+		thickness: 1 / 720 // 0.0015
+		color:     "#808080e0"
+	}
+	measureLine: {
+		thickness: 2 / 720 // 0.003
+		color:     "#e0e0e0e0"
+	}
+	background: {
+		color: "#000"
+	}
+	border: {
+		color: "#303030"
+	}
+}
+
+// internal state data for use in the skin
+// these are intermediates that cant be simply calculated from inputs or constants
+// (aka has a long calc)
+_#settings: {
+	lanes: {
+		[#Channel]:
+			judgementText:
+				offsetMult: int
+	}
+}
+
+_#settings: {
+	lanes: {
+		china:
+			judgementText: offsetMult: *+2 | _
+		hihat:
+			judgementText: offsetMult: *+0 | _
+		"hihat-pedal":
+			judgementText: offsetMult: *-1 | _
+		snare:
+			judgementText: offsetMult: *+0 | _
+		"high-tom":
+			judgementText: offsetMult: *+1 | _
+		bass:
+			judgementText: offsetMult: *-1 | _
+		"mid-tom":
+			judgementText: offsetMult: *+1 | _
+		"low-tom":
+			judgementText: offsetMult: *+0 | _
+		crash:
+			judgementText: offsetMult: *+2 | _
+		ride:
+			judgementText: offsetMult: *+0 | _
+	}
+}
+
+// endregion
+// =============================================================================
+// =============================================================================
+// region program
+
+// lane index
+mania:
+	lanes: {
+		// open hand hihat position (remote stand required)
+		// hihat: index: 4.25
+
+		// ride after right crash
+		ride: index: 9
+	}
+
+if (_#inputs.laneLayout == "B") {
+	mania: lanes: "hihat-pedal": index: 3.5
+	mania: lanes: "high-tom": index:    5.5
+}
+if (_#inputs.laneLayout == "C") {
+	mania: lanes: "high-tom": index: 5.5
+}
+if (_#inputs.laneLayout == "D") {
+	mania: lanes: "hihat-pedal": index: 4.5
+}
+
+// icon position
+mania: {
+	iconContainerPosition: _#constants.judgementLine.position - 0.1
+	iconContainerHeight:   _#constants.judgementLine.position - iconContainerPosition
+}
+
+// icon size
+mania:
+	lanes:
+		[#Channel]:
+			_icon=icon: {
+				if _icon.crop.width > _icon.crop.height {
+					fill: "fit"
+				}
+			}
+
+// icon animation
+mania:
+	iconAnimation: "dtxBounceDown"
+
+// judgement text position
+_#fn: offset: {
+	_#offset: int
+
+	_#constants.judgementText.position[_#inputs.targetEffectPosition] +
+	(_#constants.judgementText.offset * _#offset)
+}
+
+mania:
+	lanes:
+		[channel=#Channel]:
+			judgementTextPosition: number | *(_#fn.offset & {_, _#offset: _#settings.lanes[channel].judgementText.offsetMult})
+
+// set filtering mode and blend
+mania:
+	judgements:
+		[#CoarseJudgement]:
+			filteringMode: "linear"
+
+// mania:
+// 	lanes:
+// 		_channel=[#Channel]: {
+// 			background: filteringMode: "linear"
+// 			icon: filteringMode:       "linear"
+// 			adornment: filteringMode:  "linear"
+// 			if (_channel.adornment != _|_) {
+// 				adornment: blend: "mixture"
+// 			}
+// 			_secondary=secondary: [
+// 				for s in _secondary {
+// 					s & {
+// 						// adornment: filteringMode: "linear"
+// 						adornment: blend: "mixture"
+// 					}
+// 				},
+// 			]
+// 		}
+
+mania:
+	lanes:
+		[channel=#Channel]:
+			chip:
+				filteringMode: "nearest"
+
+// endregion
+// =============================================================================
+// =============================================================================
+// region mania values
+// TODO: refactor this heavily
+// TODO: make the lanes portion more compact by utilising CUE to its potential
+
+mania: {
+	scrollMultiplier:      _#inputs.speed / 810 * 720
+	ghostNoteWidth:        0.6
+	judgementLinePosition: _#constants.judgementLine.position +
+				(_#inputs.targetLinePosition * _#constants.judgementLine.offset)
+	judgementLineThickness: _#constants.judgementLine.thickness
+	chipThickness:          (5 + _#inputs.speed) / 720
+	beatLineThickness:      _#constants.beatLine.thickness
+	measureLineThickness:   _#constants.measureLine.thickness
+	beatLineColor:          _#constants.beatLine.color
+	measureLineColor:       _#constants.measureLine.color
+	backgroundColor:        _#constants.background.color
+	borderColor:            _#constants.border.color
+
+	shutter: {
+		texture: {
+			file: "Graphics/7_shutter.png"
+		}
+		height: _#inputs.shutter.bottom / 100
+	}
+
+	laneContainer: {
+		relativeSizeAxes: "both"
+		// width:            0.4359375
+		// width: {
+		// 	(list.Sum([for channel, lane in mania.lanes {
+		// 		lane.width + lane.leftBorder
+		// 	}]) + 2) / 1280
+		// }
+		fillMode: "fit"
+		fillAspectRatio: {
+			(list.Sum([for channel, lane in mania.lanes {
+				lane.width + lane.leftBorder
+			}]) + 2) / 1280 * 16 / 9
+		}
+		// x: 295
+		relativePosition: {
+			x: 295/1280 + (fillAspectRatio * 9 / 16 / 2)
+			y: 0
+		}
+		anchor: "topLeft"
+		origin: "topCentre"
+	}
+	hitErrorDisplay: {
+		anchorTarget: "laneContainer"
+		origin:       "centre"
+		width:        200.0
+		height:       40.0
+		y:            -50
+		anchor:       "bottomCentre"
+		layout:       "horizontal"
+	}
+	video: {
+		anchorTarget:     "songInfoPanel"
+		origin:           "topLeft"
+		anchor:           "bottomLeft"
+		width:            0.3
+		height:           0.3
+		relativeSizeAxes: "both"
+		y:                5
+	}
+	songInfoPanel: {
+		layout:       "vertical"
+		anchorTarget: "positionIndicator"
+		origin:       "topLeft"
+		anchor:       "topRight"
+		x:            5
+		y:            5
+	}
+
+	judgements: {
+		chips:    false
+		textures: true
+		errorNumbers: {
+			show:         true
+			showFastSlow: false
+
+			// elementData: {
+			// 	anchorTarget: "laneContainer"
+			// 	origin:       "bottomCentre"
+			// 	relativePosition: {
+			// 		x: 0.32
+			// 		y: 0.7
+			// 	}
+			// }
+		}
+		[#CoarseJudgement]: {
+			crop: {
+				height: 170
+				width:  250
+			}
+			animateY:      170
+			frameCount:    24
+			frameDuration: 14
+			scaleX:        0.45
+			scaleY:        0.45
+			fill:          "fill"
+			file:          "Graphics/7_judge strings.png"
+		}
+		perfect: crop: x: 0
+		good: crop: x:    250
+		bad: crop: x:     750
+		miss: crop: x:    1000
+	}
+
+	_lanes=lanes: {
+		_channel=[channel=#Channel]: {
+			// TODO: secondaries
+			if (_channel.background.crop.x != _|_) {
+				background: {
+					crop: {
+						width:  _lanes[channel].width
+						height: 720
+					}
+					file: "Graphics/7_Paret.png"
+					fill: "stretch"
+				}
+			}
+			if (_channel.icon.crop.x != _|_) {
+				icon: {
+					file: "Graphics/7_pads.png"
+				}
+			}
+			if (_channel.chip.crop.x != _|_) {
+				chip: {
+					crop: {
+						height: 12
+						// width:  _lanes[channel].width - 2
+						y: 26
+					}
+					file: "Graphics/7_chips_drums.png"
+					fill: "stretch"
+				}
+			}
+			if (_channel.adornment.crop.x != _|_) {
+				adornment: {
+					crop: {
+						height: 64
+						y:      128
+					}
+					file:          "Graphics/7_chips_drums.png"
+					animateY:      64
+					frameCount:    8
+					frameDuration: 70
+				}
+			}
+		}
+
+		// pedals
+		"hihat-pedal": {
+			width:      50
+			leftBorder: 1
+			background:
+				crop:
+					x: 123
+			icon: {
+				crop: {
+					x:      118
+					y:      192
+					width:  50
+					height: 56
+				}
+			}
+			chip: {
+				crop: {
+					width: 48
+					x:     665
+				}
+			}
+			adornment: {
+				crop: {
+					width: 58
+					x:     660
+				}
+			}
+			secondary: [
+				{
+					chip: {
+						crop: {
+							height: 12
+							width:  48
+							x:      485
+							y:      26
+						}
+						file: "Graphics/7_chips_drums.png"
+						fill: "stretch"
+					}
+					adornment: {
+						crop: {
+							height: 64
+							width:  58
+							x:      480
+							y:      128
+						}
+						file:          "Graphics/7_chips_drums.png"
+						filteringMode: "linear"
+						animateY:      64
+						frameCount:    8
+						frameDuration: 70
+					}
+				},
+			]
+		}
+		bass: {
+			width:      62
+			leftBorder: 7
+			background: {
+				crop: {
+					x: 286
+				}
+			}
+			icon: {
+				crop: {
+					x:      16
+					y:      192
+					width:  62
+					height: 56
+				}
+			}
+			chip: {
+				// color:          "#8b70ff"
+				// fragmentShader: "sh_chip.fs"
+				crop: {
+					width: 60
+					x:     5
+				}
+			}
+			adornment: {
+				crop: {
+					width: 70
+					x:     0
+				}
+			}
+		}
+
+		// drums
+		snare: {
+			width:      56
+			leftBorder: 1
+			background: {
+				color: "#000"
+				fill:  "stretch"
+			}
+			icon: {
+				crop: {
+					x:      23
+					y:      96
+					width:  56
+					height: 64
+				}
+			}
+			chip: {
+				// color:          "#ffc808"
+				// fragmentShader: "sh_chip.fs"
+				crop: {
+					width: 54
+					x:     131
+				}
+			}
+		}
+		"high-tom": {
+			width:      48
+			leftBorder: 1
+			background: {
+				color: "#000"
+				fill:  "stretch"
+			}
+			icon: {
+				crop: {
+					x:      112
+					y:      96
+					width:  48
+					height: 64
+				}
+			}
+			chip: {
+				crop: {
+					width: 46
+					x:     195
+				}
+			}
+		}
+		"mid-tom": {
+			width:      48
+			leftBorder: 1
+			background: {
+				color: "#000"
+				fill:  "stretch"
+			}
+			icon: {
+				crop: {
+					x:      214
+					y:      96
+					width:  48
+					height: 64
+				}
+			}
+			chip: {
+				crop: {
+					width: 46
+					x:     251
+				}
+			}
+		}
+		"low-tom": {
+			width:      48
+			leftBorder: 1
+			background: {
+				color: "#000"
+				fill:  "stretch"
+			}
+			icon: {
+				crop: {
+					x:      309
+					y:      96
+					width:  48
+					height: 64
+				}
+			}
+			chip: {
+				crop: {
+					width: 46
+					x:     307
+				}
+			}
+			adornment: {
+				crop: {
+					width: 56
+					x:     302
+				}
+			}
+		}
+
+		// cymbals
+		china: {
+			width:      65
+			leftBorder: 3
+			background: {
+				crop: {
+					x: 3
+				}
+			}
+			icon: {
+				crop: {
+					x:      35
+					y:      0
+					width:  65
+					height: 64
+				}
+			}
+			adornment: {
+				crop: {
+					width: 74
+					x:     538
+				}
+			}
+			chip: {
+				crop: {
+					width: 64
+					x:     543
+				}
+			}
+			secondary: [
+				{
+					channel: "splash"
+					adornment: {
+						crop: {
+							height: 64
+							width:  48
+							x:      612
+							y:      128
+						}
+						file:          "Graphics/7_chips_drums.png"
+						animateY:      64
+						frameCount:    8
+						frameDuration: 70
+					}
+					chip: {
+						crop: {
+							height: 12
+							width:  46
+							x:      75
+							y:      26
+						}
+						scaleX: 0.8
+						file:   "Graphics/7_chips_drums.png"
+						fill:   "stretch"
+					}
+				},
+			]
+		}
+		hihat: {
+			width:      48
+			leftBorder: 6
+			background: {
+				color: "#000"
+				fill:  "stretch"
+			}
+			icon: {
+				crop: {
+					x:      129
+					y:      0
+					width:  48
+					height: 64
+				}
+			}
+			adornment: {
+				crop: {
+					height: 64
+					width:  56
+					x:      70
+					y:      128
+				}
+				file:          "Graphics/7_chips_drums.png"
+				animateY:      64
+				frameCount:    8
+				frameDuration: 70
+			}
+			chip: {
+				crop: {
+					width: 46
+					x:     75
+				}
+			}
+			secondary: [
+				{
+					chip: {
+						crop: {
+							height: 12
+							width:  38
+							x:      617
+							y:      26
+						}
+						file:   "Graphics/7_chips_drums.png"
+						fill:   "stretch"
+						scaleX: 38 / 46
+					}
+					adornment: {
+						crop: {
+							height: 64
+							width:  48
+							x:      612
+							y:      128
+						}
+						file:          "Graphics/7_chips_drums.png"
+						animateY:      64
+						frameCount:    8
+						frameDuration: 70
+					}
+				},
+			]
+
+		}
+		crash: {
+			width:      66
+			leftBorder: 6
+			background: {
+				crop: {
+					x: 452
+				}
+			}
+			icon: {
+				crop: {
+					x:      204
+					y:      0
+					width:  66
+					height: 64
+				}
+			}
+			chip: {
+				crop: {
+					width: 64
+					x:     363
+				}
+			}
+			adornment: {
+				crop: {
+					height: 64
+					width:  74
+					x:      358
+					y:      128
+				}
+				file:          "Graphics/7_chips_drums.png"
+				animateY:      64
+				frameCount:    8
+				frameDuration: 70
+			}
+		}
+		ride: {
+			width:      40
+			leftBorder: 1
+			color:      "#11A8CD"
+			background: {
+				color: "#000"
+				fill:  "stretch"
+			}
+			icon: {
+				crop: {
+					x:      204
+					y:      0
+					width:  66
+					height: 64
+				}
+			}
+			chip: {
+				// crop: {
+				// 	height: 12
+				// 	width:  64
+				// 	x:      543
+				// 	y:      26
+				// }
+				crop: {
+					width: 38
+					x:     437
+				}
+			}
+			// adornment: {
+			//   crop: {
+			//     height: 64,
+			//     width: 74,
+			//     x: 538,
+			//     y: 128
+			//   },
+			//   file: "Graphics/7_chips_drums.png",
+			//   scaleX: 1.25,
+			//   scaleY: 1.25,
+			//   animateY: 64,
+			//   frameCount: 8,
+			//   frameDuration: 70
+			// },
+			secondary: [
+				{
+					channel: "ride-bell"
+					adornment: {
+						crop: {
+							height: 64
+							width:  48
+							x:      432
+							y:      128
+						}
+						file:          "Graphics/7_chips_drums.png"
+						scaleX:        1.25
+						scaleY:        1.25
+						animateY:      64
+						frameCount:    8
+						frameDuration: 70
+					}
+					chip: {
+						crop: {
+							height: 12
+							width:  38
+							x:      437
+							y:      26
+						}
+						file: "Graphics/7_chips_drums.png"
+						fill: "stretch"
+						// scaleX: 0.8
+					}
+				},
+			]
+		}
+	}
+}
+
+// endregion
+// =============================================================================
+// =============================================================================
+// region notation values
+
+notation: {
+	// leftNoteColor: "#536B7A"
+	// rightNoteColor: "#FA2D2D"
+
+	notationColor:          "#e0e0e0"
+	staffLineColor:         "#454545"
+	playfieldBackground:    "#1f1f1f"
+	inputDisplayBackground: "#282828"
+	measureLines:           true
+	channels: {
+		"high-tom": {
+			// color: "#5BC7F5"
+			color: "#4fa8e1"
+		}
+		"mid-tom": {
+			// color: "#F5EE5B"
+			color: "#95a94e"
+		}
+		"low-tom": {
+			// color: "#F55A73"
+			color: "#da7d9b"
+		}
+	}
+}
+
+// endregion
