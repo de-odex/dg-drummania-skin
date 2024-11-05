@@ -65,7 +65,7 @@ _#constants: {
 		color: "#000"
 	}
 	border: {
-		color: "#303030"
+		color: "#585858"
 	}
 }
 
