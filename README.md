@@ -22,16 +22,25 @@ This is for when you want to customise the skin with the same settings as drumma
 package dgskin
 
 _#inputs: {
-	speed:                4.0  // your speed (0.5 to 20.0)
-	targetLinePosition:   0    // your target line position (0 to 100)
-	targetEffectPosition: "A"  // your target effect position (A, B)
-	laneLayout:           "A"  // your lane layout (A, B, C, D)
-	shutter:
-		top: 0
-		bottom: 0
+  speed:                4.0  // your speed (0.5 to 20.0)
+  targetLinePosition:   0    // your target line position (0 to 100)
+  targetEffectPosition: "A"  // your target effect position (A, B)
+  laneLayout:           "A"  // your lane layout (A, B, C, D)
+  shutter:
+    top: 0
+    bottom: 0
 }
 ```
 6. Compile the skin with `cue export -fo ./skin.json`
 
 ### Advanced (change anything about the skin)
 This will be an upcoming feature for this skin.
+
+## Differences
+- Different note graphics are (currently) used for:
+  - Splash
+  - Left Bass Pedal (same as Bass Pedal but flipped, on the Hi-hat Pedal lane)
+    - This will be configurable in the future
+  - Ride (like in DTXMania)
+    - This will be configurable in the future
+- Currently, the borders of the lanes are not skinnable, so they are left as solid colours with accurate sizes for now
