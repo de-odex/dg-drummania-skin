@@ -1,0 +1,53 @@
+{
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build",
+      "type": "shell",
+      "command": "cue export . -fo skin.json",
+      "options": {
+        "env": {
+          "CUE_EXPERIMENT": "evalv3=1"
+        }
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "silent",
+        "focus": false,
+        "panel": "dedicated",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "test equality",
+      "type": "shell",
+      "command": "cue vet . skin.json",
+      "options": {
+        "env": {
+          "CUE_EXPERIMENT": "evalv3=1"
+        }
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "silent",
+        "focus": false,
+        "panel": "dedicated",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": [],
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      }
+    }
+  ]
+}
