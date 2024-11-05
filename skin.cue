@@ -707,31 +707,11 @@ mania: {
 				}
 			}
 			chip: {
-				// crop: {
-				// 	height: 12
-				// 	width:  64
-				// 	x:      543
-				// 	y:      26
-				// }
 				crop: {
 					width: 38
 					x:     437
 				}
 			}
-			// adornment: {
-			//   crop: {
-			//     height: 64,
-			//     width: 74,
-			//     x: 538,
-			//     y: 128
-			//   },
-			//   file: "Graphics/7_chips_drums.png",
-			//   scaleX: 1.25,
-			//   scaleY: 1.25,
-			//   animateY: 64,
-			//   frameCount: 8,
-			//   frameDuration: 70
-			// },
 			secondary: [
 				{
 					channel: "ride-bell"
