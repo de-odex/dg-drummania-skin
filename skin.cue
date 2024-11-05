@@ -3,8 +3,8 @@ package dgskin
 import ("list")
 
 name:        "drummania imitator"
-gameVersion: "0.8.0"
-skinVersion: "0.1.1"
+gameVersion: "0.9.0"
+skinVersion: "0.2.0"
 
 // notes
 
