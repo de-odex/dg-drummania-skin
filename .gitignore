@@ -1,6 +1,5 @@
 Graphics/
 old/
 info/
-mine.cue
+private/
 skin.json
-*.fs
