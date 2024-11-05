@@ -329,8 +329,8 @@ mania: {
 				chip: {
 					crop: {
 						height: 12
-						// width:  _lanes[channel].width - 2
-						y: 26
+						width:  _lanes[channel].width
+						y:      26
 					}
 					file: "Graphics/7_chips_drums.png"
 					fill: "stretch"
@@ -367,8 +367,8 @@ mania: {
 			}
 			chip: {
 				crop: {
-					width: 48
-					x:     665
+					width: 50
+					x:     664
 				}
 			}
 			adornment: {
@@ -425,8 +425,8 @@ mania: {
 				// color:          "#8b70ff"
 				// fragmentShader: "sh_chip.fs"
 				crop: {
-					width: 60
-					x:     5
+					width: 62
+					x:     4
 				}
 			}
 			adornment: {
@@ -457,8 +457,8 @@ mania: {
 				// color:          "#ffc808"
 				// fragmentShader: "sh_chip.fs"
 				crop: {
-					width: 54
-					x:     131
+					width: 56
+					x:     130
 				}
 			}
 		}
@@ -479,8 +479,8 @@ mania: {
 			}
 			chip: {
 				crop: {
-					width: 46
-					x:     195
+					width: 48
+					x:     194
 				}
 			}
 		}
@@ -501,8 +501,8 @@ mania: {
 			}
 			chip: {
 				crop: {
-					width: 46
-					x:     251
+					width: 48
+					x:     250
 				}
 			}
 		}
@@ -523,8 +523,8 @@ mania: {
 			}
 			chip: {
 				crop: {
-					width: 46
-					x:     307
+					width: 48
+					x:     306
 				}
 			}
 			adornment: {
@@ -560,7 +560,7 @@ mania: {
 			}
 			chip: {
 				crop: {
-					width: 64
+					width: 65
 					x:     543
 				}
 			}
@@ -622,8 +622,8 @@ mania: {
 			}
 			chip: {
 				crop: {
-					width: 46
-					x:     75
+					width: 48
+					x:     74
 				}
 			}
 			secondary: [
@@ -673,8 +673,8 @@ mania: {
 			}
 			chip: {
 				crop: {
-					width: 64
-					x:     363
+					width: 66
+					x:     362
 				}
 			}
 			adornment: {
@@ -708,8 +708,8 @@ mania: {
 			}
 			chip: {
 				crop: {
-					width: 38
-					x:     437
+					width: 40
+					x:     436
 				}
 			}
 			secondary: [
