@@ -123,11 +123,14 @@ package dgskin
 }
 
 #ManiaLane: {
-	index?:                 number
-	width?:                 number
-	leftBorder?:            number
+	index?: number
+	width?: number
+	leftBorder?: {
+		texture?: #Texture
+		width?:   number
+		color?:   #Color
+	}
 	judgementTextPosition?: #Proportion
-	borderColor?:           #Color
 	color?:                 #Color
 
 	adornment?:  #Texture
@@ -199,18 +202,22 @@ package dgskin
 #Mania: {
 	scrollMultiplier?: number
 
-	ghostNoteWidth?:         #Proportion
-	judgementLineColor?:     #Color
-	judgementLinePosition?:  #Proportion
-	judgementLineThickness?: #Proportion
-	chipThickness?:          #Proportion
-	beatLineColor?:          #Color
-	backgroundColor?:        #Color
-	backgroundFontColor?:    #Color
-	borderColor?:            #Color
-	beatLineThickness?:      #Proportion
-	measureLineColor?:       #Color
-	measureLineThickness?:   #Proportion
+	ghostNoteWidth?: #Proportion
+	judgementLine?: {
+		texture?:   #Texture
+		color?:     #Color
+		position?:  #Proportion
+		thickness?: #Proportion
+		offset?:    number
+	}
+	chipThickness?:        #Proportion
+	beatLineColor?:        #Color
+	backgroundColor?:      #Color
+	backgroundFontColor?:  #Color
+	borderColor?:          #Color
+	beatLineThickness?:    #Proportion
+	measureLineColor?:     #Color
+	measureLineThickness?: #Proportion
 	// TODO: TEMP
 	iconContainerHeight?:   number
 	iconContainerPosition?: number

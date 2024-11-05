@@ -203,18 +203,30 @@ mania:
 // TODO: make the lanes portion more compact by utilising CUE to its potential
 
 mania: {
-	scrollMultiplier:      _#inputs.speed / 810 * 720
-	ghostNoteWidth:        0.6
-	judgementLinePosition: _#constants.judgementLine.position +
+	scrollMultiplier: _#inputs.speed / 810 * 720
+	ghostNoteWidth:   0.6
+	judgementLine: {
+		texture: {
+			file: "Graphics/ScreenPlayDrums hit-bar.png"
+			crop: {
+				y:      1
+				height: 5
+				width:  8
+			}
+			fill:      "stretch"
+			wrapModeS: "repeat"
+		}
+		position: _#constants.judgementLine.position +
 				(_#inputs.targetLinePosition * _#constants.judgementLine.offset)
-	judgementLineThickness: _#constants.judgementLine.thickness
-	chipThickness:          (5 + _#inputs.speed) / 720
-	beatLineThickness:      _#constants.beatLine.thickness
-	measureLineThickness:   _#constants.measureLine.thickness
-	beatLineColor:          _#constants.beatLine.color
-	measureLineColor:       _#constants.measureLine.color
-	backgroundColor:        _#constants.background.color
-	borderColor:            _#constants.border.color
+		thickness: _#constants.judgementLine.thickness
+	}
+	chipThickness:        (5 + _#inputs.speed) / 720
+	beatLineThickness:    _#constants.beatLine.thickness
+	measureLineThickness: _#constants.measureLine.thickness
+	beatLineColor:        _#constants.beatLine.color
+	measureLineColor:     _#constants.measureLine.color
+	backgroundColor:      _#constants.background.color
+	borderColor:          _#constants.border.color
 
 	shutter: {
 		texture: {
@@ -234,7 +246,7 @@ mania: {
 		fillMode: "fit"
 		fillAspectRatio: {
 			(list.Sum([for channel, lane in mania.lanes {
-				lane.width + lane.leftBorder
+				lane.width + lane.leftBorder.width
 			}]) + 2) / 1280 * 16 / 9
 		}
 		// x: 295
@@ -310,6 +322,17 @@ mania: {
 	_lanes=lanes: {
 		_channel=[channel=#Channel]: {
 			// TODO: secondaries
+			if (_channel.leftBorder.texture.crop.x != _|_) {
+				leftBorder: texture: {
+					crop: {
+						width:  _lanes[channel].leftBorder.width
+						height: 720
+					}
+					file:  "Graphics/7_Paret.png"
+					fill:  "stretch"
+					alpha: 0.8
+				}
+			}
 			if (_channel.background.crop.x != _|_) {
 				background: {
 					crop: {
@@ -352,8 +375,13 @@ mania: {
 
 		// pedals
 		"hihat-pedal": {
-			width:      50
-			leftBorder: 1
+			width: 50
+			leftBorder: {
+				width: 1
+				texture:
+					crop:
+						x: 122
+			}
 			background:
 				crop:
 					x: 123
@@ -406,8 +434,13 @@ mania: {
 			]
 		}
 		bass: {
-			width:      62
-			leftBorder: 7
+			width: 62
+			leftBorder: {
+				width: 7
+				texture:
+					crop:
+						x: 279
+			}
 			background: {
 				crop: {
 					x: 286
@@ -439,8 +472,13 @@ mania: {
 
 		// drums
 		snare: {
-			width:      56
-			leftBorder: 1
+			width: 56
+			leftBorder: {
+				width: 1
+				texture:
+					crop:
+						x: 173
+			}
 			background: {
 				color: "#000"
 				fill:  "stretch"
@@ -463,8 +501,13 @@ mania: {
 			}
 		}
 		"high-tom": {
-			width:      48
-			leftBorder: 1
+			width: 48
+			leftBorder: {
+				width: 1
+				texture:
+					crop:
+						x: 230
+			}
 			background: {
 				color: "#000"
 				fill:  "stretch"
@@ -485,8 +528,13 @@ mania: {
 			}
 		}
 		"mid-tom": {
-			width:      48
-			leftBorder: 1
+			width: 48
+			leftBorder: {
+				width: 1
+				texture:
+					crop:
+						x: 348
+			}
 			background: {
 				color: "#000"
 				fill:  "stretch"
@@ -507,8 +555,13 @@ mania: {
 			}
 		}
 		"low-tom": {
-			width:      48
-			leftBorder: 1
+			width: 48
+			leftBorder: {
+				width: 1
+				texture:
+					crop:
+						x: 397
+			}
 			background: {
 				color: "#000"
 				fill:  "stretch"
@@ -537,8 +590,13 @@ mania: {
 
 		// cymbals
 		china: {
-			width:      65
-			leftBorder: 3
+			width: 65
+			leftBorder: {
+				width: 3
+				texture:
+					crop:
+						x: 0
+			}
 			background: {
 				crop: {
 					x: 3
@@ -594,8 +652,13 @@ mania: {
 			]
 		}
 		hihat: {
-			width:      48
-			leftBorder: 6
+			width: 48
+			leftBorder: {
+				width: 6
+				texture:
+					crop:
+						x: 68
+			}
 			background: {
 				color: "#000"
 				fill:  "stretch"
@@ -656,8 +719,13 @@ mania: {
 
 		}
 		crash: {
-			width:      66
-			leftBorder: 6
+			width: 66
+			leftBorder: {
+				width: 6
+				texture:
+					crop:
+						x: 446
+			}
 			background: {
 				crop: {
 					x: 452
@@ -691,9 +759,14 @@ mania: {
 			}
 		}
 		ride: {
-			width:      40
-			leftBorder: 1
-			color:      "#11A8CD"
+			width: 40
+			leftBorder: {
+				width: 1
+				texture:
+					crop:
+						x: 518
+			}
+			color: "#11A8CD"
 			background: {
 				color: "#000"
 				fill:  "stretch"
