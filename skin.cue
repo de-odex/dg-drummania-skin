@@ -4,7 +4,7 @@ import ("list")
 
 name:        "drummania imitator"
 gameVersion: "0.8.0"
-skinVersion: "0.1.0"
+skinVersion: "0.1.1"
 
 // notes
 
