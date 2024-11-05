@@ -254,7 +254,6 @@ mania: {
 			x: 295/1280 + (fillAspectRatio * 9 / 16 / 2)
 			y: 0
 		}
-		anchor: "topLeft"
 		origin: "topCentre"
 	}
 	hitErrorDisplay: {
