@@ -277,13 +277,12 @@ mania: {
 		layout:       "horizontal"
 	}
 	video: {
-		anchorTarget:     "songInfoPanel"
-		origin:           "topLeft"
-		anchor:           "bottomLeft"
-		width:            0.3
-		height:           0.3
-		relativeSizeAxes: "both"
-		y:                5
+		anchorTarget: "songInfoPanel"
+		origin:       "topLeft"
+		anchor:       "bottomLeft"
+		width:        1280 * 0.3
+		height:       720 * 0.3
+		y:            5
 	}
 	songInfoPanel: {
 		layout:       "vertical"
