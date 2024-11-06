@@ -381,6 +381,9 @@ mania: {
 					frameDuration: 70
 				}
 			}
+
+			background:
+				alpha: 0.8
 		}
 
 		// pedals
