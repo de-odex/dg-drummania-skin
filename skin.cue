@@ -110,6 +110,19 @@ _#settings: {
 // =============================================================================
 // region program
 
+// region functions
+
+_#fn: {
+	offset: {
+		_#offset: int
+
+		_#constants.judgementText.position[_#inputs.targetEffectPosition] +
+		(_#constants.judgementText.offset * _#offset)
+	}
+}
+
+// endregion
+
 // lane index
 mania:
 	lanes: {
@@ -152,13 +165,6 @@ mania:
 	iconAnimation: "dtxBounceDown"
 
 // judgement text position
-_#fn: offset: {
-	_#offset: int
-
-	_#constants.judgementText.position[_#inputs.targetEffectPosition] +
-	(_#constants.judgementText.offset * _#offset)
-}
-
 mania:
 	lanes:
 		[channel=#Channel]:
