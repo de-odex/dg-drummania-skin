@@ -136,6 +136,7 @@ package dgskin
 	adornment?:  #Texture
 	chip?:       #Texture
 	icon?:       #Texture
+	attack?:     #Texture
 	background?: #Texture
 
 	// secondary?: #ManiaLaneSecondary | [...#ManiaLaneSecondary]

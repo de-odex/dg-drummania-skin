@@ -384,6 +384,19 @@ mania: {
 
 			background:
 				alpha: 0.8
+
+			attack: {
+				file:          "Graphics/ScreenPlayDrums chip fire.png"
+				frameCount:    12
+				frameDuration: (1000 / 45)
+				animateX:      150
+				fill:          "fill"
+				blend:         "additive"
+				crop: {
+					width:  150
+					height: 150
+				}
+			}
 		}
 
 		// pedals
