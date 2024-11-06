@@ -24,7 +24,7 @@ skinVersion: "0.2.0"
 
 // inputs to be used as in gitadora's settings page
 _#inputs: {
-	speed:      number | *2.0
+	speed:      number | *4.0
 	laneLayout: *"A" | "B" | "C" | "D"
 	shutter: {
 		top:    #Percentage | *0
