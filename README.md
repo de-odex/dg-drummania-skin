@@ -1,6 +1,6 @@
 # Drum Game drummania skin
 
-This is a skin for [Drum Game](https://github.com/Jumprocks1/drum-game) that mimics drummania as closely as possible.
+This is a skin for [Drum Game](https://github.com/Jumprocks1/drum-game) that mimics GITADORA drummania (post-Matixx) as closely as possible.
 
 ![Preview](preview.png?raw=true)
 
@@ -10,7 +10,7 @@ This is a skin for [Drum Game](https://github.com/Jumprocks1/drum-game) that mim
 
 ### Basic (speed 4.0, no customisation)
 3. Put `skin.json` from the Releases in the folder
-4. Find a DTXMania drummania skin and copy the `Graphics` folder into the `dg-drummania-skin` folder
+4. Find a DTXMania drummania skin (Matixx or later) and copy the `Graphics` folder into the `dg-drummania-skin` folder
 
 ### Intermediate (customise your skin)
 This is for when you want to customise the skin with the same settings as drummania.
