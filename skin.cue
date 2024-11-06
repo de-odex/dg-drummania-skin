@@ -119,6 +119,11 @@ _#fn: {
 		_#constants.judgementText.position[_#inputs.targetEffectPosition] +
 		(_#constants.judgementText.offset * _#offset)
 	}
+	framerateToMs: {
+		_#framerate: >1 & int
+
+		1000 / _#framerate
+	}
 }
 
 // endregion
