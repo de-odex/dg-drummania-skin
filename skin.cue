@@ -329,13 +329,13 @@ mania: {
 		miss: crop: x:    1000
 	}
 
-	_lanes=lanes: {
-		_channel=[channel=#Channel]: {
+	lanes: {
+		_channel=[#Channel]: {
 			// TODO: secondaries
 			if (_channel.leftBorder.texture.crop.x != _|_) {
 				leftBorder: texture: {
 					crop: {
-						width:  _lanes[channel].leftBorder.width
+						width:  _channel.leftBorder.width
 						height: 720
 					}
 					file:  "Graphics/7_Paret.png"
@@ -346,7 +346,7 @@ mania: {
 			if (_channel.background.crop.x != _|_) {
 				background: {
 					crop: {
-						width:  _lanes[channel].width
+						width:  _channel.width
 						height: 720
 					}
 					file: "Graphics/7_Paret.png"
@@ -362,7 +362,7 @@ mania: {
 				chip: {
 					crop: {
 						height: 12
-						width:  _lanes[channel].width
+						width:  _channel.width
 						y:      26
 					}
 					file: "Graphics/7_chips_drums.png"
