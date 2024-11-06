@@ -699,15 +699,9 @@ mania: {
 			}
 			adornment: {
 				crop: {
-					height: 64
-					width:  56
-					x:      70
-					y:      128
+					width: 56
+					x:     70
 				}
-				file:          "Graphics/7_chips_drums.png"
-				animateY:      64
-				frameCount:    8
-				frameDuration: 70
 			}
 			chip: {
 				crop: {
@@ -773,15 +767,9 @@ mania: {
 			}
 			adornment: {
 				crop: {
-					height: 64
-					width:  74
-					x:      358
-					y:      128
+					width: 74
+					x:     358
 				}
-				file:          "Graphics/7_chips_drums.png"
-				animateY:      64
-				frameCount:    8
-				frameDuration: 70
 			}
 		}
 		ride: {
