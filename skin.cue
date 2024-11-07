@@ -24,8 +24,12 @@ skinVersion: "0.2.0"
 
 // inputs to be used as in gitadora's settings page
 _#inputs: {
-	speed:      number | *4.0
-	laneLayout: *"A" | "B" | "C" | "D"
+	speed:            number | *4.0
+	laneDisplay:      *"ON" | "LANE OFF" | "BAR LINE OFF" | "ALL OFF" // TODO
+	laneTransparency: #Percentage | *20                               // TODO
+	movieDisplay:     *"A" | "B" | "C"                                // TODO
+	frameDisplay:     *"ON" | "PHRASE/CLEAR METER OFF" | "ALL OFF"    // TODO
+	laneLayout:       *"A" | "B" | "C" | "D"
 	shutter: {
 		top:    #Percentage | *0
 		bottom: #Percentage | *0
