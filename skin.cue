@@ -9,8 +9,8 @@ skinVersion: "0.2.0"
 // notes
 
 // alternating
-// 13 / 720 heights per 1 / 60 second for 4.0 speed
-// 14 / 720 heights per 1 / 60 second for 4.0 speed
+// 13 / 720 per 1 / 60 second for 4.0 speed
+// 14 / 720 per 1 / 60 second for 4.0 speed
 // 13.5 / 720 * 60 = 1.125 screens per second = 810 pixels per second
 
 // 150 / 720 for judgement line height from centre to bottom
@@ -37,28 +37,30 @@ _#inputs: {
 // these are constants no matter what
 _#constants: {
 	// as in the default position with setting 0
+	screen: {
+		height:      720
+		width:       1280
+		aspectRatio: width / height
+	}
 	judgementLine: {
-		position:  150 / 720 // old 156, 0.216
-		thickness: 6 / 720
-		offset:    1 / 720
+		position:  150 / screen.height // old 156, 0.216
+		thickness: 6 / screen.height
+		offset:    1 / screen.height
 	}
 	judgementText: {
 		position: {
-			A: 328 / 720 // 0.455
-			B: 90 / 720
+			A: 328 / screen.height // 0.455
+			B: 90 / screen.height
 		}
-
-		offset: 32 / 720
+		offset: 32 / screen.height
 	}
-	// chip: {
-	// 	thickness: 12 / 720 // 0.016
-	// }
+	chip: {}
 	beatLine: {
-		thickness: 1 / 720 // 0.0015
+		thickness: 1 / screen.height // 0.0015
 		color:     "#808080e0"
 	}
 	measureLine: {
-		thickness: 2 / 720 // 0.003
+		thickness: 2 / screen.height // 0.003
 		color:     "#e0e0e0e0"
 	}
 	background: {
@@ -72,13 +74,11 @@ _#constants: {
 // internal state data for use in the skin
 // these are intermediates that cant be simply calculated from inputs or constants
 // (aka has a long calc)
-_#settings: {
-	lanes: {
+_#settings:
+	lanes:
 		[#Channel]:
 			judgementText:
 				offsetMult: int
-	}
-}
 
 _#settings: {
 	lanes: {
@@ -181,28 +181,9 @@ mania:
 		[#CoarseJudgement]:
 			filteringMode: "linear"
 
-// mania:
-// 	lanes:
-// 		_channel=[#Channel]: {
-// 			background: filteringMode: "linear"
-// 			icon: filteringMode:       "linear"
-// 			adornment: filteringMode:  "linear"
-// 			if (_channel.adornment != _|_) {
-// 				adornment: blend: "mixture"
-// 			}
-// 			_secondary=secondary: [
-// 				for s in _secondary {
-// 					s & {
-// 						// adornment: filteringMode: "linear"
-// 						adornment: blend: "mixture"
-// 					}
-// 				},
-// 			]
-// 		}
-
 mania:
 	lanes:
-		[channel=#Channel]:
+		[#Channel]:
 			chip:
 				filteringMode: "nearest"
 
@@ -212,9 +193,10 @@ mania:
 // region mania values
 // TODO: refactor this heavily
 // TODO: make the lanes portion more compact by utilising CUE to its potential
+// TODO: refactor lanes to instead use an intermediate object
 
 mania: {
-	scrollMultiplier: _#inputs.speed / 810 * 720
+	scrollMultiplier: _#inputs.speed / 810 * _#constants.screen.height
 	ghostNoteWidth:   0.6
 	judgementLine: {
 		texture: {
@@ -231,7 +213,7 @@ mania: {
 				(_#inputs.targetLinePosition * _#constants.judgementLine.offset)
 		thickness: _#constants.judgementLine.thickness
 	}
-	chipThickness:        (5 + _#inputs.speed) / 720
+	chipThickness:        (5 + _#inputs.speed) / _#constants.screen.height
 	beatLineThickness:    _#constants.beatLine.thickness
 	measureLineThickness: _#constants.measureLine.thickness
 	beatLineColor:        _#constants.beatLine.color
@@ -248,21 +230,15 @@ mania: {
 
 	laneContainer: {
 		relativeSizeAxes: "both"
-		// width:            0.4359375
-		// width: {
-		// 	(list.Sum([for channel, lane in mania.lanes {
-		// 		lane.width + lane.leftBorder
-		// 	}]) + 2) / 1280
-		// }
-		fillMode: "fit"
+		fillMode:         "fit"
 		fillAspectRatio: {
 			(list.Sum([for channel, lane in mania.lanes {
 				lane.width + lane.leftBorder.width
-			}]) + 2) / 1280 * 16 / 9
+			}]) + 2) / _#constants.screen.width * _#constants.screen.aspectRatio
 		}
-		// x: 295
 		relativePosition: {
-			x: 295/1280 + (fillAspectRatio * 9 / 16 / 2)
+			// TODO: refactor to use a "lane width" instead of undoing the calculation
+			x: 295/_#constants.screen.width + (fillAspectRatio * 9 / 16 / 2)
 			y: 0
 		}
 		origin: "topCentre"
@@ -280,8 +256,8 @@ mania: {
 		anchorTarget: "songInfoPanel"
 		origin:       "topLeft"
 		anchor:       "bottomLeft"
-		width:        1280 * 0.3
-		height:       720 * 0.3
+		width:        _#constants.screen.width * 0.3
+		height:       _#constants.screen.height * 0.3
 		y:            5
 	}
 	songInfoPanel: {
@@ -335,7 +311,7 @@ mania: {
 				leftBorder: texture: {
 					crop: {
 						width:  _channel.leftBorder.width
-						height: 720
+						height: _#constants.screen.height
 					}
 					file:  "Graphics/7_Paret.png"
 					fill:  "stretch"
@@ -346,7 +322,7 @@ mania: {
 				background: {
 					crop: {
 						width:  _channel.width
-						height: 720
+						height: _#constants.screen.height
 					}
 					file: "Graphics/7_Paret.png"
 					fill: "stretch"
@@ -838,9 +814,6 @@ mania: {
 // region notation values
 
 notation: {
-	// leftNoteColor: "#536B7A"
-	// rightNoteColor: "#FA2D2D"
-
 	notationColor:          "#e0e0e0"
 	staffLineColor:         "#454545"
 	playfieldBackground:    "#1f1f1f"
@@ -848,15 +821,12 @@ notation: {
 	measureLines:           true
 	channels: {
 		"high-tom": {
-			// color: "#5BC7F5"
 			color: "#4fa8e1"
 		}
 		"mid-tom": {
-			// color: "#F5EE5B"
 			color: "#95a94e"
 		}
 		"low-tom": {
-			// color: "#F55A73"
 			color: "#da7d9b"
 		}
 	}
