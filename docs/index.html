@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bootstrap demo</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <div class="container my-4">
+    <h1>DrumGame GITADORA Skin</h1>
+
+    <div class="form-floating mb-3">
+      <select id="laneDisplay" class="form-select">
+        <option selected>ON</option>
+        <option>LANE OFF</option>
+        <option>BAR LINE OFF</option>
+        <option>ALL OFF</option>
+      </select>
+      <label for="laneDisplay" class="form-label">Movie Display</label>
+    </div>
+    <div class="form-floating mb-3">
+      <select id="laneDisplay" class="form-select">
+        <option selected>ON</option>
+        <option>LANE OFF</option>
+        <option>BAR LINE OFF</option>
+        <option>ALL OFF</option>
+      </select>
+      <label for="laneDisplay" class="form-label">Frame Display</label>
+    </div>
+
+
+
+
+    <div class="row mb-3">
+      <div class="col-sm-2">
+        <div class="row">
+          <label for="speedInput" class="col-sm-10 col-form-label">Speed</label>
+          <output class="col-sm-2 col-form-label" id="speedOutput">4</output>
+        </div>
+      </div>
+      <div class="col-sm-10">
+        <input class="form-range" id="speedInput" type="range" min="0.5" max="20" step="0.5" value="4"
+          oninput="document.getElementById('speedOutput').value = this.value">
+      </div>
+    </div>
+    <fieldset class="row mb-3">
+      <legend class="col-form-label col-sm-2 pt-0">Lane Display</legend>
+      <div class="col-sm-10">
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="laneDisplay" id="laneDisplay1" value="ON" checked>
+          <label class="form-check-label" for="laneDisplay1">ON</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="laneDisplay" id="laneDisplay2" value="LANE OFF">
+          <label class="form-check-label" for="laneDisplay2">LANE OFF</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="laneDisplay" id="laneDisplay3" value="BAR LINE OFF">
+          <label class="form-check-label" for="laneDisplay3">BAR LINE OFF</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="laneDisplay" id="laneDisplay4" value="ALL OFF">
+          <label class="form-check-label" for="laneDisplay4">ALL OFF</label>
+        </div>
+      </div>
+    </fieldset>
+    <div class="row mb-3">
+      <div class="col-sm-2">
+        <div class="row">
+          <label for="laneTransparencyInput" class="col-sm-10 col-form-label">Lane Transparency</label>
+          <output class="col-sm-2 col-form-label" id="laneTransparencyOutput">20</output>
+        </div>
+      </div>
+      <div class="col-sm-10">
+        <input class="form-range" id="laneTransparencyInput" type="range" min="0" max="100" step="1" value="20"
+          oninput="document.getElementById('laneTransparencyOutput').value = this.value">
+      </div>
+    </div>
+    <p>
+      Movie Display
+    </p>
+    <p>
+      Frame Display
+    </p>
+    <fieldset class="row mb-3">
+      <legend class="col-form-label col-sm-2 pt-0">Lane Layout</legend>
+      <div class="col-sm-10">
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="laneLayout" id="laneLayout1" value="A" checked>
+          <label class="form-check-label" for="laneLayout1">A</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="laneLayout" id="laneLayout2" value="B">
+          <label class="form-check-label" for="laneLayout2">B</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="laneLayout" id="laneLayout3" value="C">
+          <label class="form-check-label" for="laneLayout3">C</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="laneLayout" id="laneLayout4" value="D">
+          <label class="form-check-label" for="laneLayout4">D</label>
+        </div>
+      </div>
+    </fieldset>
+    <p>
+      Shutter
+    <p>Top</p>
+    <p>Bottom</p>
+    </p>
+    <p>
+      Target Line Position
+    </p>
+    <p>
+      Target Effect Position
+    </p>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </div>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+</body>
+
+
+</html>
