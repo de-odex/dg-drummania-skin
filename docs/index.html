@@ -16,14 +16,16 @@
 
     <div class="row mb-3">
       <div class="col-sm-2">
-        <div class="row">
-          <label for="speedInput" class="col-sm-10 col-form-label">Speed</label>
-          <output class="col-sm-2 col-form-label" id="speedOutput">4</output>
-        </div>
+        <label for="speedInput" class="col-form-label">Speed</label>
       </div>
       <div class="col-sm-10">
-        <input class="form-range" id="speedInput" type="range" min="0.5" max="20" step="0.5" value="4"
-          oninput="document.getElementById('speedOutput').value = this.value">
+        <div class="row">
+          <output class="col-1 col-form-label" id="speedOutput">4</output>
+          <div class="col-11 align-items-center d-flex">
+            <input class="form-range" id="speedInput" type="range" min="0.5" max="20" step="0.5" value="4"
+              oninput="document.getElementById('speedOutput').value = this.value">
+          </div>
+        </div>
       </div>
     </div>
     <fieldset class="row mb-3">
@@ -49,22 +51,53 @@
     </fieldset>
     <div class="row mb-3">
       <div class="col-sm-2">
-        <div class="row">
-          <label for="laneTransparencyInput" class="col-sm-10 col-form-label">Lane Transparency</label>
-          <output class="col-sm-2 col-form-label" id="laneTransparencyOutput">20</output>
-        </div>
+        <label for="laneTransparencyInput" class="col-form-label">Lane Transparency</label>
       </div>
       <div class="col-sm-10">
-        <input class="form-range" id="laneTransparencyInput" type="range" min="0" max="100" step="1" value="20"
-          oninput="document.getElementById('laneTransparencyOutput').value = this.value">
+        <div class="row">
+          <output class="col-1 col-form-label" id="laneTransparencyOutput">20</output>
+          <div class="col-11 align-items-center d-flex">
+            <input class="form-range" id="laneTransparencyInput" type="range" min="0" max="100" step="1" value="20"
+              oninput="document.getElementById('laneTransparencyOutput').value = this.value">
+          </div>
+        </div>
       </div>
     </div>
-    <p>
-      Movie Display
-    </p>
-    <p>
-      Frame Display
-    </p>
+    <fieldset class="row mb-3">
+      <legend class="col-form-label col-sm-2 pt-0">Movie Display</legend>
+      <div class="col-sm-10">
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="movieDisplay" id="movieDisplay1" value="A" checked>
+          <label class="form-check-label" for="movieDisplay1">A</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="movieDisplay" id="movieDisplay2" value="B">
+          <label class="form-check-label" for="movieDisplay2">B</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="movieDisplay" id="movieDisplay3" value="C">
+          <label class="form-check-label" for="movieDisplay3">C</label>
+        </div>
+      </div>
+    </fieldset>
+    <fieldset class="row mb-3">
+      <legend class="col-form-label col-sm-2 pt-0">Frame Display</legend>
+      <div class="col-sm-10">
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="frameDisplay" id="frameDisplay1" value="ON" checked>
+          <label class="form-check-label" for="frameDisplay1">ON</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="frameDisplay" id="frameDisplay2"
+            value="PHRASE/CLEAR METER OFF">
+          <label class="form-check-label" for="frameDisplay2">PHRASE/CLEAR METER OFF</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="frameDisplay" id="frameDisplay3" value="ALL OFF">
+          <label class="form-check-label" for="frameDisplay3">ALL OFF</label>
+        </div>
+      </div>
+    </fieldset>
     <fieldset class="row mb-3">
       <legend class="col-form-label col-sm-2 pt-0">Lane Layout</legend>
       <div class="col-sm-10">
@@ -86,19 +119,66 @@
         </div>
       </div>
     </fieldset>
-    <p>
-      Shutter
-    <p>Top</p>
-    <p>Bottom</p>
-    </p>
-    <p>
-      Target Line Position
-    </p>
-    <p>
-      Target Effect Position
-    </p>
+    <div class="row mb-3">
+      <div class="col-sm-2">
+        <label for="shutterTopInput" class="col-form-label">Top Shutter</label>
+      </div>
+      <div class="col-sm-10">
+        <div class="row">
+          <output class="col-1 col-form-label" id="shutterTopOutput">0</output>
+          <div class="col-11 align-items-center d-flex">
+            <input class="form-range" id="shutterTopInput" type="range" min="0" max="100" step="1" value="0"
+              oninput="document.getElementById('shutterTopOutput').value = this.value">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mb-3">
+      <div class="col-sm-2">
+        <label for="shutterBottomInput" class="col-form-label">Bottom Shutter</label>
+      </div>
+      <div class="col-sm-10">
+        <div class="row">
+          <output class="col-1 col-form-label" id="shutterBottomOutput">0</output>
+          <div class="col-11 align-items-center d-flex">
+            <input class="form-range" id="shutterBottomInput" type="range" min="0" max="100" step="1" value="0"
+              oninput="document.getElementById('shutterBottomOutput').value = this.value">
+          </div>
+        </div>
+      </div>
+    </div>
+    <fieldset class="row mb-3">
+      <legend class="col-form-label col-sm-2 pt-0">Target Effect Position</legend>
+      <div class="col-sm-10">
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="targetEffectPosition" id="targetEffectPosition1" value="A"
+            checked>
+          <label class="form-check-label" for="targetEffectPosition1">A</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="targetEffectPosition" id="targetEffectPosition2" value="B">
+          <label class="form-check-label" for="targetEffectPosition2">B</label>
+        </div>
+      </div>
+    </fieldset>
+    <div class="row mb-3">
+      <div class="col-sm-2">
+        <label for="targetLinePositionInput" class="col-form-label">Target Line Position</label>
+      </div>
+      <div class="col-sm-10">
+        <div class="row">
+          <output class="col-1 col-form-label" id="targetLinePositionOutput">0</output>
+          <div class="col-11 align-items-center d-flex">
+            <input class="form-range" id="targetLinePositionInput" type="range" min="0" max="100" step="1" value="0"
+              oninput="document.getElementById('targetLinePositionOutput').value = this.value">
+          </div>
+        </div>
+      </div>
+    </div>
 
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <div class="text-right">
+      <button class="btn btn-primary" type="submit">Submit</button>
+    </div>
   </div>
 
 
