@@ -119,34 +119,6 @@
         </div>
       </div>
     </fieldset>
-    <div class="row mb-3">
-      <div class="col-sm-2">
-        <label for="shutterTopInput" class="col-form-label">Top Shutter</label>
-      </div>
-      <div class="col-sm-10">
-        <div class="row">
-          <output class="col-1 col-form-label" id="shutterTopOutput">0</output>
-          <div class="col-11 align-items-center d-flex">
-            <input class="form-range" id="shutterTopInput" type="range" min="0" max="100" step="1" value="0"
-              oninput="document.getElementById('shutterTopOutput').value = this.value">
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row mb-3">
-      <div class="col-sm-2">
-        <label for="shutterBottomInput" class="col-form-label">Bottom Shutter</label>
-      </div>
-      <div class="col-sm-10">
-        <div class="row">
-          <output class="col-1 col-form-label" id="shutterBottomOutput">0</output>
-          <div class="col-11 align-items-center d-flex">
-            <input class="form-range" id="shutterBottomInput" type="range" min="0" max="100" step="1" value="0"
-              oninput="document.getElementById('shutterBottomOutput').value = this.value">
-          </div>
-        </div>
-      </div>
-    </div>
     <fieldset class="row mb-3">
       <legend class="col-form-label col-sm-2 pt-0">Target Effect Position</legend>
       <div class="col-sm-10">
@@ -171,6 +143,34 @@
           <div class="col-11 align-items-center d-flex">
             <input class="form-range" id="targetLinePositionInput" type="range" min="0" max="100" step="1" value="0"
               oninput="document.getElementById('targetLinePositionOutput').value = this.value">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mb-3">
+      <div class="col-sm-2">
+        <label for="shutterInInput" class="col-form-label">Shutter(IN)</label>
+      </div>
+      <div class="col-sm-10">
+        <div class="row">
+          <output class="col-1 col-form-label" id="shutterInOutput">0</output>
+          <div class="col-11 align-items-center d-flex">
+            <input class="form-range" id="shutterInInput" type="range" min="0" max="100" step="1" value="0"
+              oninput="document.getElementById('shutterInOutput').value = this.value">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mb-3">
+      <div class="col-sm-2">
+        <label for="shutterOutInput" class="col-form-label">Shutter(OUT)</label>
+      </div>
+      <div class="col-sm-10">
+        <div class="row">
+          <output class="col-1 col-form-label" id="shutterOutOutput">0</output>
+          <div class="col-11 align-items-center d-flex">
+            <input class="form-range" id="shutterOutInput" type="range" min="0" max="100" step="1" value="0"
+              oninput="document.getElementById('shutterOutOutput').value = this.value">
           </div>
         </div>
       </div>

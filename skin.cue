@@ -24,18 +24,18 @@ skinVersion: "0.2.0"
 
 // inputs to be used as in gitadora's settings page
 _#inputs: {
-	speed:            >=0.5 & <=10000.0 | *4.0
-	laneDisplay:      *"ON" | "LANE OFF" | "BAR LINE OFF" | "ALL OFF" // TODO
-	laneTransparency: #Percentage | *20                               // TODO
-	movieDisplay:     *"A" | "B" | "C"                                // TODO
-	frameDisplay:     *"ON" | "PHRASE/CLEAR METER OFF" | "ALL OFF"    // TODO
-	laneLayout:       *"A" | "B" | "C" | "D"
-	shutter: {
-		top:    #Percentage | *0
-		bottom: #Percentage | *0
-	}
-	targetLinePosition:   #Percentage | *0
+	speed:                >=0.5 & <=10000.0 | *4.0
+	laneDisplay:          *"ON" | "LANE OFF" | "BAR LINE OFF" | "ALL OFF" // TODO
+	laneTransparency:     #Percentage | *20                               // TODO
+	movieDisplay:         "A" | "B" | *"C"                                // TODO
+	frameDisplay:         *"ON" | "PHRASE/CLEAR METER OFF" | "ALL OFF"    // TODO
+	laneLayout:           *"A" | "B" | "C" | "D"
 	targetEffectPosition: *"A" | "B"
+	targetLinePosition:   #Percentage | *0
+	shutter: {
+		"in":  #Percentage | *0
+		"out": #Percentage | *0
+	}
 }
 
 // these are constants no matter what
@@ -229,7 +229,7 @@ mania: {
 		texture: {
 			file: "Graphics/7_shutter.png"
 		}
-		height: _#inputs.shutter.bottom / 100
+		height: _#inputs.shutter.out / 100
 	}
 
 	laneContainer: {
