@@ -9,12 +9,10 @@
   <script id="inputTemplate" type="text/x-handlebars-template">
     {{#each inputs}}
       <fieldset class="row mb-3">
-        <legend class="col-sm-3 col-lg-2 col-form-label">
+        <legend class="col-sm-3 col-lg-2 col-form-label {{#if todo}}bg-warning{{/if}}" {{#if tooltip}}data-bs-toggle="tooltip" data-bs-title="{{tooltip}}"{{/if}}>
           {{displayName}}
           {{#if tooltip}}
-            <i class="text-secondary bi bi-info-circle"
-              data-bs-toggle="tooltip" data-bs-title="{{tooltip}}">
-            </i>
+            <i class="text-secondary bi bi-info-circle"></i>
           {{/if}}
         </legend>
         <div class="col align-self-center">
@@ -22,10 +20,13 @@
             <div class="row">
               <div class="col-sm-3 col-lg-2">
                 <input class="form-control" id="{{../name}}Input2" type="number" min="{{range.[0]}}" max="{{range.[1]}}" step="{{step}}" value="{{default}}"
+                  {{#if tooltip}}data-bs-toggle="tooltip" data-bs-title="{{tooltip}}"{{/if}}
+                  {{#if ../todo}}disabled{{/if}}
                   oninput="document.getElementById('{{../name}}Input').value = this.value">
               </div>
               <div class="col align-items-center d-flex">
                 <input class="form-range" id="{{../name}}Input" type="range" min="{{range.[0]}}" max="{{range.[1]}}" step="{{step}}" value="{{default}}"
+                  {{#if ../todo}}disabled{{/if}}
                   oninput="document.getElementById('{{../name}}Input2').value = this.value">
               </div>
             </div>
@@ -33,8 +34,20 @@
           {{#if enum}}
             {{#each enum.choices}}
               <div class="form-check form-check-inline" {{#if tooltip}}data-bs-toggle="tooltip" data-bs-title="{{tooltip}}"{{/if}}>
-                <input class="form-check-input" type="radio" name="{{../name}}" id="{{../name}}{{@index}}" value="{{name}}" {{#if default}}checked{{/if}}>
-                <label class="form-check-label" for="{{../name}}{{@index}}">{{name}}</label>
+                {{#if image}}
+                  <input class="btn-check" type="radio" name="{{../name}}" id="{{../name}}{{@index}}" value="{{name}}"
+                    {{#if ../todo}}disabled{{/if}}
+                    {{#if default}}checked{{/if}}>
+                  <label class="btn btn-outline-primary" for="{{../name}}{{@index}}">
+                    <img class="d-block img-fluid" style="width: 350px;" src="{{image ../name}}" alt="{{../displayName}} {{name}}">
+                    {{name}}
+                  </label>
+                {{else}}
+                  <input class="form-check-input" type="radio" name="{{../name}}" id="{{../name}}{{@index}}" value="{{name}}"
+                    {{#if ../todo}}disabled{{/if}}
+                    {{#if default}}checked{{/if}}>
+                  <label class="form-check-label" for="{{../name}}{{@index}}">{{name}}</label>
+                {{/if}}
               </div>
             {{/each}}
           {{/if}}
@@ -44,12 +57,21 @@
   </script>
   <script>
     function renderInput() {
+      Handlebars.registerHelper("image", function (baseName) {
+        if (typeof this.image === 'string') {
+          return this.image;
+        }
+        else {
+          return new Handlebars.SafeString(`./assets/images/${baseName}_${this.name}.png`);
+        }
+      });
       const template = Handlebars.compile(document.getElementById('inputTemplate').innerHTML);
       document.getElementById('inputs').innerHTML = template({
         "inputs": [
           {
             "name": "speed",
             "displayName": "Speed",
+            "tooltip": "Changes the speed of moving notes. Higher numbers mean faster speeds and more space between notes.",
             "number": {
               "range": [0.5, 20],
               "step": 0.25,
@@ -59,18 +81,30 @@
           {
             "name": "laneDisplay",
             "displayName": "Lane Display",
+            "tooltip": "Shows/hides lines in the lanes.",
+            "todo": true,
             "enum": {
               "choices": [
-                { "name": "ON", "default": true },
-                { "name": "LANE OFF" },
-                { "name": "BAR LINE OFF" },
-                { "name": "ALL OFF" },
+                {
+                  "name": "ON",
+                  "default": true,
+                },
+                {
+                  "name": "LANE OFF",
+                },
+                {
+                  "name": "BAR LINE OFF",
+                },
+                {
+                  "name": "ALL OFF",
+                },
               ],
             }
           },
           {
             "name": "laneTransparency",
             "displayName": "Lane Transparency",
+            "tooltip": "Changes the transparency of the lanes.",
             "number": {
               "range": [0, 100],
               "step": 1,
@@ -80,6 +114,7 @@
           {
             "name": "movieDisplay",
             "displayName": "Movie Display",
+            "todo": true,
             "enum": {
               "choices": [
                 {
@@ -87,10 +122,12 @@
                 },
                 {
                   "name": "B",
+                  "tooltip": "Displays dimmed out in-game movies in the lanes.",
                 },
                 {
                   "name": "C",
                   "default": true,
+                  "tooltip": "Displays in-game movies in special windows outside the lanes.",
                 },
               ],
             }
@@ -98,11 +135,22 @@
           {
             "name": "frameDisplay",
             "displayName": "Frame Display",
+            "tooltip": "Sets the display of the frames around the lanes.",
+            "todo": true,
             "enum": {
               "choices": [
-                { "name": "ON", "default": true },
-                { "name": "PHRASE/CLEAR METER OFF" },
-                { "name": "ALL OFF" },
+                {
+                  "name": "ON",
+                  "default": true,
+                },
+                {
+                  "name": "PHRASE/CLEAR METER OFF",
+                  "tooltip": "Turns OFF only the phrase display and completion meter display.",
+                },
+                {
+                  "name": "ALL OFF",
+                  "tooltip": "Tums OFF the display of all frames. The score/excitement meter/special phrase effects will also be turned OFF.",
+                }
               ],
             }
           },
@@ -114,15 +162,22 @@
                 {
                   "name": "A",
                   "default": true,
+                  "image": true,
                 },
                 {
                   "name": "B",
+                  "tooltip": "2 pedals and 3 toms are arranged together in this type.",
+                  "image": true,
                 },
                 {
                   "name": "C",
+                  "tooltip": "Only 3 toms are arranged together in this type.",
+                  "image": true,
                 },
                 {
                   "name": "D",
+                  "tooltip": "2 pedals are arranged together in this type.",
+                  "image": true,
                 },
               ],
             }
@@ -130,6 +185,7 @@
           {
             "name": "targetEffectPosition",
             "displayName": "Target Effect Position",
+            "tooltip": "Changes the position of the target effect displayed during the game.",
             "enum": {
               "choices": [
                 {
@@ -138,6 +194,7 @@
                 },
                 {
                   "name": "B",
+                  "tooltip": "The target effect displayed during the game appears near the target line.",
                 },
               ],
             }
@@ -145,6 +202,7 @@
           {
             "name": "targetLinePosition",
             "displayName": "Target Line Position",
+            "tooltip": "You can adjust the position of the target line.",
             "number": {
               "range": [0, 100],
               "step": 1,
@@ -154,6 +212,8 @@
           {
             "name": "shutterIn",
             "displayName": "Shutter(IN)",
+            "tooltip": "Adjusts the shutter position on the side where the notes appear, and limits the range of visible notes.",
+            "todo": true,
             "number": {
               "range": [0, 100],
               "step": 1,
@@ -163,6 +223,7 @@
           {
             "name": "shutterOut",
             "displayName": "Shutter(OUT)",
+            "tooltip": "Adjusts the shutter position on the target line to limit the range of visible notes.",
             "number": {
               "range": [0, 100],
               "step": 1,
@@ -182,12 +243,14 @@
 
 <body>
   <div class="container my-4">
-    <h1>DrumGame GITADORA Skin Configurator</h1>
+    <h1 class="display-3">DrumGame GITADORA Skin Configurator</h1>
+    <p class="text-secondary">Coloured options are under construction.</p>
+    <hr>
 
     <div id="inputs"></div>
 
     <div class="text-end">
-      <button class="btn btn-primary" type="submit">Submit</button>
+      <button class="btn btn-primary">Generate</button>
     </div>
   </div>
 
