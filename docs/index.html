@@ -8,175 +8,156 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
   <link rel="stylesheet" href="styles.css">
+
+  <script id="inputTemplate" type="text/x-handlebars-template">
+    {{#each inputs}}
+      <fieldset class="row mb-3">
+        <legend class="col-sm-3 col-lg-2 col-form-label">{{ displayName }}</legend>
+        <div class="col align-self-center">
+          {{#if number}}{{#with number}}
+            <div class="row">
+              <div class="col-sm-3 col-lg-2">
+                <input class="form-control" id="{{../name}}Input2" type="number" min="{{range.[0]}}" max="{{range.[1]}}" step="{{step}}" value="{{default}}"
+                  oninput="document.getElementById('{{../name}}Input').value = this.value">
+              </div>
+              <div class="col align-items-center d-flex">
+                <input class="form-range" id="{{../name}}Input" type="range" min="{{range.[0]}}" max="{{range.[1]}}" step="{{step}}" value="{{default}}"
+                  oninput="document.getElementById('{{../name}}Input2').value = this.value">
+              </div>
+            </div>
+          {{/with}}{{/if}}
+          {{#if enum}}
+            {{#each enum.choices}}
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="{{../name}}" id="{{../name}}{{@index}}" value="{{name}}" {{#if default}}checked{{/if}}>
+                <label class="form-check-label" for="{{../name}}{{@index}}">{{name}}</label>
+              </div>
+            {{/each}}
+          {{/if}}
+        </div>
+      </fieldset>
+    {{/each}}
+  </script>
+  <script>
+    function renderInput() {
+      const template = Handlebars.compile(document.getElementById('inputTemplate').innerHTML);
+      document.getElementById('inputs').innerHTML = template({
+        "inputs": [
+          {
+            "name": "speed",
+            "displayName": "Speed",
+            "number": {
+              "range": [0.5, 20],
+              "step": 0.25,
+              "default": 4,
+            }
+          },
+          {
+            "name": "laneDisplay",
+            "displayName": "Lane Display",
+            "enum": {
+              "choices": [
+                { "name": "ON", "default": true },
+                { "name": "LANE OFF" },
+                { "name": "BAR LINE OFF" },
+                { "name": "ALL OFF" },
+              ],
+            }
+          },
+          {
+            "name": "laneTransparency",
+            "displayName": "Lane Transparency",
+            "number": {
+              "range": [0, 100],
+              "step": 1,
+              "default": 20,
+            }
+          },
+          {
+            "name": "movieDisplay",
+            "displayName": "Movie Display",
+            "enum": {
+              "choices": [
+                { "name": "A", "default": true },
+                { "name": "B" },
+                { "name": "C" },
+              ],
+            }
+          },
+          {
+            "name": "frameDisplay",
+            "displayName": "Frame Display",
+            "enum": {
+              "choices": [
+                { "name": "ON", "default": true },
+                { "name": "PHRASE/CLEAR METER OFF" },
+                { "name": "ALL OFF" },
+              ],
+            }
+          },
+          {
+            "name": "laneLayout",
+            "displayName": "Lane Layout",
+            "enum": {
+              "choices": [
+                { "name": "A", "default": true },
+                { "name": "B" },
+                { "name": "C" },
+                { "name": "D" },
+              ],
+            }
+          },
+          {
+            "name": "targetEffectPosition",
+            "displayName": "Target Effect Position",
+            "enum": {
+              "choices": [
+                { "name": "A", "default": true },
+                { "name": "B" },
+              ],
+            }
+          },
+          {
+            "name": "targetLinePosition",
+            "displayName": "Target Line Position",
+            "number": {
+              "range": [0, 100],
+              "step": 1,
+              "default": 0,
+            }
+          },
+          {
+            "name": "shutterIn",
+            "displayName": "Shutter(IN)",
+            "number": {
+              "range": [0, 100],
+              "step": 1,
+              "default": 0,
+            }
+          },
+          {
+            "name": "shutterOut",
+            "displayName": "Shutter(OUT)",
+            "number": {
+              "range": [0, 100],
+              "step": 1,
+              "default": 0,
+            }
+          },
+        ]
+      });
+    }
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
 </head>
 
 <body>
   <div class="container my-4">
     <h1>DrumGame GITADORA Skin Configurator</h1>
 
-    <div class="row mb-3">
-      <div class="col-sm-2">
-        <label for="speedInput" class="col-form-label">Speed</label>
-      </div>
-      <div class="col-sm-10">
-        <div class="row">
-          <output class="col-1 col-form-label" id="speedOutput">4</output>
-          <div class="col-11 align-items-center d-flex">
-            <input class="form-range" id="speedInput" type="range" min="0.5" max="20" step="0.5" value="4"
-              oninput="document.getElementById('speedOutput').value = this.value">
-          </div>
-        </div>
-      </div>
-    </div>
-    <fieldset class="row mb-3">
-      <legend class="col-form-label col-sm-2 pt-0">Lane Display</legend>
-      <div class="col-sm-10">
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="laneDisplay" id="laneDisplay1" value="ON" checked>
-          <label class="form-check-label" for="laneDisplay1">ON</label>
-        </div>
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="laneDisplay" id="laneDisplay2" value="LANE OFF">
-          <label class="form-check-label" for="laneDisplay2">LANE OFF</label>
-        </div>
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="laneDisplay" id="laneDisplay3" value="BAR LINE OFF">
-          <label class="form-check-label" for="laneDisplay3">BAR LINE OFF</label>
-        </div>
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="laneDisplay" id="laneDisplay4" value="ALL OFF">
-          <label class="form-check-label" for="laneDisplay4">ALL OFF</label>
-        </div>
-      </div>
-    </fieldset>
-    <div class="row mb-3">
-      <div class="col-sm-2">
-        <label for="laneTransparencyInput" class="col-form-label">Lane Transparency</label>
-      </div>
-      <div class="col-sm-10">
-        <div class="row">
-          <output class="col-1 col-form-label" id="laneTransparencyOutput">20</output>
-          <div class="col-11 align-items-center d-flex">
-            <input class="form-range" id="laneTransparencyInput" type="range" min="0" max="100" step="1" value="20"
-              oninput="document.getElementById('laneTransparencyOutput').value = this.value">
-          </div>
-        </div>
-      </div>
-    </div>
-    <fieldset class="row mb-3">
-      <legend class="col-form-label col-sm-2 pt-0">Movie Display</legend>
-      <div class="col-sm-10">
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="movieDisplay" id="movieDisplay1" value="A" checked>
-          <label class="form-check-label" for="movieDisplay1">A</label>
-        </div>
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="movieDisplay" id="movieDisplay2" value="B">
-          <label class="form-check-label" for="movieDisplay2">B</label>
-        </div>
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="movieDisplay" id="movieDisplay3" value="C">
-          <label class="form-check-label" for="movieDisplay3">C</label>
-        </div>
-      </div>
-    </fieldset>
-    <fieldset class="row mb-3">
-      <legend class="col-form-label col-sm-2 pt-0">Frame Display</legend>
-      <div class="col-sm-10">
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="frameDisplay" id="frameDisplay1" value="ON" checked>
-          <label class="form-check-label" for="frameDisplay1">ON</label>
-        </div>
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="frameDisplay" id="frameDisplay2"
-            value="PHRASE/CLEAR METER OFF">
-          <label class="form-check-label" for="frameDisplay2">PHRASE/CLEAR METER OFF</label>
-        </div>
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="frameDisplay" id="frameDisplay3" value="ALL OFF">
-          <label class="form-check-label" for="frameDisplay3">ALL OFF</label>
-        </div>
-      </div>
-    </fieldset>
-    <fieldset class="row mb-3">
-      <legend class="col-form-label col-sm-2 pt-0">Lane Layout</legend>
-      <div class="col-sm-10">
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="laneLayout" id="laneLayout1" value="A" checked>
-          <label class="form-check-label" for="laneLayout1">A</label>
-        </div>
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="laneLayout" id="laneLayout2" value="B">
-          <label class="form-check-label" for="laneLayout2">B</label>
-        </div>
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="laneLayout" id="laneLayout3" value="C">
-          <label class="form-check-label" for="laneLayout3">C</label>
-        </div>
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="laneLayout" id="laneLayout4" value="D">
-          <label class="form-check-label" for="laneLayout4">D</label>
-        </div>
-      </div>
-    </fieldset>
-    <fieldset class="row mb-3">
-      <legend class="col-form-label col-sm-2 pt-0">Target Effect Position</legend>
-      <div class="col-sm-10">
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="targetEffectPosition" id="targetEffectPosition1" value="A"
-            checked>
-          <label class="form-check-label" for="targetEffectPosition1">A</label>
-        </div>
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="targetEffectPosition" id="targetEffectPosition2" value="B">
-          <label class="form-check-label" for="targetEffectPosition2">B</label>
-        </div>
-      </div>
-    </fieldset>
-    <div class="row mb-3">
-      <div class="col-sm-2">
-        <label for="targetLinePositionInput" class="col-form-label">Target Line Position</label>
-      </div>
-      <div class="col-sm-10">
-        <div class="row">
-          <output class="col-1 col-form-label" id="targetLinePositionOutput">0</output>
-          <div class="col-11 align-items-center d-flex">
-            <input class="form-range" id="targetLinePositionInput" type="range" min="0" max="100" step="1" value="0"
-              oninput="document.getElementById('targetLinePositionOutput').value = this.value">
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row mb-3">
-      <div class="col-sm-2">
-        <label for="shutterInInput" class="col-form-label">Shutter(IN)</label>
-      </div>
-      <div class="col-sm-10">
-        <div class="row">
-          <output class="col-1 col-form-label" id="shutterInOutput">0</output>
-          <div class="col-11 align-items-center d-flex">
-            <input class="form-range" id="shutterInInput" type="range" min="0" max="100" step="1" value="0"
-              oninput="document.getElementById('shutterInOutput').value = this.value">
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row mb-3">
-      <div class="col-sm-2">
-        <label for="shutterOutInput" class="col-form-label">Shutter(OUT)</label>
-      </div>
-      <div class="col-sm-10">
-        <div class="row">
-          <output class="col-1 col-form-label" id="shutterOutOutput">0</output>
-          <div class="col-11 align-items-center d-flex">
-            <input class="form-range" id="shutterOutInput" type="range" min="0" max="100" step="1" value="0"
-              oninput="document.getElementById('shutterOutOutput').value = this.value">
-          </div>
-        </div>
-      </div>
-    </div>
+    <div id="inputs"></div>
 
-    <div class="text-right">
+    <div class="text-end">
       <button class="btn btn-primary" type="submit">Submit</button>
     </div>
   </div>
@@ -185,6 +166,10 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
     crossorigin="anonymous"></script>
+
+  <script defer>
+    renderInput()
+  </script>
 </body>
 
 
